@@ -1,0 +1,2 @@
+
+![Flytdiagram](img/flytdiagram.png)

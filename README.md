@@ -13,7 +13,8 @@
 - Velg operasjon: addisjon, subtraksjon, multiplikasjon eller divisjon
 - Skriv inn flere tall i én linje (skilt med mellomrom)
 - Parser både heltall og desimaltall (`double`)
-- Automatisk valg av riktig overload basert på input (brukes `double[]` for desimaler)
+- Demonstrerer metodeoverloading med både `int[]` og `double[]` overloads
+- Automatisk valg av riktig overload basert på input
 - Håndterer deling på null ved å gi en feilmelding
 
 ## Hvordan bruke
@@ -39,11 +40,12 @@ dotnet run
 - `initMenu()`: skriver ut menyvalg.
 - `HandleMenu()`: leser brukerens valg og mapper det til et operasjonstegn (`+`, `-`, `*`, `/`) eller avslutter med `Exit()`.
 - `AskForNumbersAndCompute(operation)`: leser en linje med tall, splitter på mellomrom, parser til `double[]`, og sjekker at det er minst to tall.
+- Programmet sjekker om alle tall er hele tall og bruker da `int[]`-overloads.
 - `Calculate(operation, values)`: ruter til riktig overload:
-	- `Add(double[] values)`
-	- `Subtract(double[] values)`
-	- `Multiply(double[] values)`
-	- `Divide(double[] values)`
+	- `Add(int[] values)` eller `Add(double[] values)`
+	- `Subtract(int[] values)` eller `Subtract(double[] values)`
+	- `Multiply(int[] values)` eller `Multiply(double[] values)`
+	- `Divide(int[] values)` eller `Divide(double[] values)`
 - Overloadene utfører beregningen over alle elementene i arrayen og returnerer resultatet.
 
 ## Feilhåndtering

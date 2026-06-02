@@ -75,11 +75,34 @@
                 Console.WriteLine("Du må skrive inn minst to tall.");
                 return;
             }
+            // Sjekk om alle tallene er int
+            var allInts = true;
+            for (var i = 0; i < values.Length; i++)
+            {
+                if (values[i] % 1 != 0)
+                {
+                    allInts = false;
+                    break;
+                }
+            }
+
+            if (allInts)
+            {
+                var intValues = new int[values.Length];
+                for (var i = 0; i < values.Length; i++)
+                {
+                    intValues[i] = (int)values[i];
+                }
+
+                var intResult = Calculate(operation, intValues);
+                Console.WriteLine($"Resultat: {intResult}");
+                return;
+            }
 
             var result = Calculate(operation, values);
             Console.WriteLine($"Resultat: {result}");
         }
-
+        // Overloads for double
         private static double Add(double[] values)
         {
             var sum = 0.0;
@@ -111,7 +134,55 @@
             }
             return result;
         }
+        // Overloads for int, with overflow checking
+        private static int Add(int[] values)
+        {
+            var sum = 0;
+            foreach (var value in values)
+            {
+                sum = checked(sum + value);
+            }
+            return sum;
+        }
+
+        private static int Subtract(int[] values)
+        {
+            var result = values[0];
+            for (var i = 1; i < values.Length; i++) result = checked(result - values[i]);
+            return result;
+        }
+
+        private static int Multiply(int[] values)
+        {
+            var result = 1;
+            foreach (var value in values) result = checked(result * value);
+            return result;
+        }
+
+        private static int Divide(int[] values)
+        {
+            var result = values[0];
+            for (var i = 1; i < values.Length; i++)
+            {
+                if (values[i] == 0) throw new DivideByZeroException();
+                result /= values[i];
+            }
+            return result;
+        }
+        // Overloads for double
         private static double Calculate(char operation, double[] values)
+        {
+            return operation switch
+            {
+                '+' => Add(values),
+                '-' => Subtract(values),
+                '*' => Multiply(values),
+                '/' => Divide(values),
+                _ => throw new ArgumentException($"Ukjent operasjon: {operation}", nameof(operation)),
+            };
+        }
+        // Overload for int
+        private static int Calculate(char operation, int[] values)
         {
             return operation switch
             {
